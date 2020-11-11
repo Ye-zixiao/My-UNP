@@ -1,6 +1,10 @@
 QUICK AND DIRTY
 ===============
 
+最好的方法获取原书源代码最好的方式是访问其github仓库：
+         https://github.com/unbook/unpv13e
+这样可以保证获取到最新没有问题的代码
+
 Execute the following from the src/ directory:
 
     ./configure    # try to figure out all implementation differences
