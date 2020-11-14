@@ -64,7 +64,8 @@ void sock_set_wild(struct sockaddr* sockaddr, socklen_t addrlen);
 ssize_t readn(int fd, void* buf, size_t nbytes);
 ssize_t writen(int fd, const void* buf, size_t nbytes);
 ssize_t readline(int fd, void* buf, size_t maxlen);
-
+ssize_t readline1(int fd, void* buf, size_t maxlen);
+ssize_t readline1buf(void** cptrptr);
 
 
 #endif //!MY_UNPXFE34_H_
