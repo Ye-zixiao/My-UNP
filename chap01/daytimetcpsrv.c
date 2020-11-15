@@ -29,12 +29,14 @@ int main(int argc, char* argv[])
 
 		currTime = time(NULL);
 		snprintf(buf, MAXLINE, "%.24s\r\n", ctime(&currTime));
-		/*if (write(connfd, buf, strlen(buf)) != strlen(buf))
-			err_sys("write error");*/
+		if (write(connfd, buf, strlen(buf)) != strlen(buf))
+			err_sys("write error");
 		//逐字节传送给客户进程
-		for (int i = 0; i < strlen(buf); ++i)
+		/*for (int i = 0; i < strlen(buf); ++i)
 			if (write(connfd, &buf[i], 1) != 1)
 				err_sys("write error");
+		*/
+		//在这个服务器中执行主动关闭的是服务进程
 		if (close(connfd) == -1)
 			err_sys("close connfd error");
 	}
