@@ -14,7 +14,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include <time.h>
+#include <signal.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -64,8 +66,15 @@ void sock_set_wild(struct sockaddr* sockaddr, socklen_t addrlen);
 ssize_t readn(int fd, void* buf, size_t nbytes);
 ssize_t writen(int fd, const void* buf, size_t nbytes);
 ssize_t readline(int fd, void* buf, size_t maxlen);
-ssize_t readline1(int fd, void* buf, size_t maxlen);
+ssize_t readline1(int fd, void* buf, size_t maxlen);//性能更好的readline
 ssize_t readline1buf(void** cptrptr);
+
+
+/**
+ * 时间状态函数
+ */
+const char* currTime(const char* fmt);
+char* currTime_r(char* buf, size_t maxlen, const char* fmt);
 
 
 #endif //!MY_UNPXFE34_H_

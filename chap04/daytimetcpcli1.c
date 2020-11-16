@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 		err_sys("socket error");
 	bzero(&svaddr, sizeof(struct sockaddr_in));
 	svaddr.sin_family = AF_INET;
-	svaddr.sin_port = htons(9999);
+	svaddr.sin_port = htons(12000);
 	if (inet_pton(AF_INET, argv[1], &svaddr.sin_addr) <= 0)
 		err_quit("inet_pton can't convert string(%s) to ipaddr", argv[1]);
 	if (connect(sockfd, (struct sockaddr*)&svaddr, sizeof(struct sockaddr_in)) == -1)
