@@ -33,8 +33,7 @@
 
 
 /**
- * 错误例程
- */
+ * 错误例程 */
 void err_ret(const char* fmt, ...);
 void err_sys(const char* fmt, ...);
 void err_dump(const char* fmt, ...);
@@ -44,8 +43,7 @@ void debug(void);
 
 
 /**
- * 网络地址辅助函数
- */
+ * 网络地址辅助函数  */
 char* sock_ntop(const struct sockaddr* sockaddr, socklen_t addrlen);
 
 //下面的暂不实现
@@ -61,20 +59,34 @@ void sock_set_wild(struct sockaddr* sockaddr, socklen_t addrlen);
 
 
 /**
- * 流式套接字指定字节的读写
- */
+ * 流式套接字指定字节的读写 */
 ssize_t readn(int fd, void* buf, size_t nbytes);
 ssize_t writen(int fd, const void* buf, size_t nbytes);
 ssize_t readline(int fd, void* buf, size_t maxlen);
-ssize_t readline1(int fd, void* buf, size_t maxlen);//性能更好的readline
-ssize_t readline1buf(void** cptrptr);
+ssize_t readline1(int fd, void* buf, size_t maxlen);
+ssize_t readlinebuf(void** cptrptr);
 
 
 /**
- * 时间状态函数
- */
+ * 时间状态函数 */
 const char* currTime(const char* fmt);
 char* currTime_r(char* buf, size_t maxlen, const char* fmt);
+
+
+/**
+ * 自定义信号处理程序安装 */
+typedef void Sigfunc(int);
+Sigfunc* mysignal(int signo, Sigfunc* func);
+
+
+/**
+ * 回射服务器辅助函数 */
+void str_echo(int sockfd);
+void sum_echo1(int sockfd);
+void sum_echo2(int sockfd);
+void str_cli(int sockfd, FILE* fp);
+void sum_cli2(int sockfd, FILE* fp);
+
 
 
 #endif //!MY_UNPXFE34_H_

@@ -44,11 +44,8 @@ ssize_t readline(int fd, void* buf, size_t maxlen) {
 				break;
 		}
 		else if (nread == 0) {
-			/*原书中的实现
 			*ptr = 0;
-			return n - 1;*/
-			*ptr++ = '\n';
-			break;
+			return n - 1;
 		}
 		else return -1;
 	}

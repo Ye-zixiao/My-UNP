@@ -21,11 +21,8 @@ ssize_t readline1(int fd, void* buf, size_t maxlen) {
 		}
 		//遇到文件结束符EOF
 		else if (nread == 0) {
-			/*原书实现：
 			*ptr = 0;
-			return n - 1;*/
-			*ptr++ = '\n';
-			break;
+			return n - 1;
 		}
 		else {
 			if (errno == EINTR)
