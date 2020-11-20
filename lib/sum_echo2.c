@@ -27,7 +27,7 @@ void sum_cli2(int sockfd, FILE* fp) {
 		}
 		if (write(sockfd, &args, sizeof(args)) != sizeof(args))
 			err_sys("write error");
-		if ((nread = readline(sockfd, &result, sizeof(result))) < 0)
+		if ((nread = readn(sockfd, &result, sizeof(result))) < 0)
 			err_sys("readline error");
 		else if (nread == 0)
 			err_quit("sum_cli2: server prematurely terminated");
@@ -49,7 +49,7 @@ void sum_echo2(int sockfd) {
 	ssize_t nread;
 
 	for (;;) {
-		if ((nread = readline(sockfd, &args, sizeof(args))) < 0)
+		if ((nread = readn(sockfd, &args, sizeof(args))) < 0)
 			err_sys("readline error");
 		else if (nread == 0)
 			return;

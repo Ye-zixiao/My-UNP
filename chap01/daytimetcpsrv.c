@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 		err_sys("setsockopt error");
 	bzero(&svaddr, sizeof(struct sockaddr_in));
 	svaddr.sin_family = AF_INET;
-	svaddr.sin_port = htons(6666);
+	svaddr.sin_port = htons(9999);
 	svaddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	if (bind(listenfd, (struct sockaddr*)&svaddr,
 			sizeof(struct sockaddr_in)) == -1)

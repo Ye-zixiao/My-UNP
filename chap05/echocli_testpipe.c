@@ -1,9 +1,16 @@
 /**
  * 测试客户端向一个已收到RST分节的套接字继续写数据
- * 而引发SIGPIPE信号的情况
+ * 而引发SIGPIPE信号的情况。当然我们也可以写一个
+ * 捕捉SIGPIPE的信号程序来知晓这一事件
  */
 
 #include "MyUNP.h"
+
+void sig_pipe(int signo) {
+	if(signo == SIGPIPE)
+		fputs("caught SIGPIPE\n", stderr);
+	exit(EXIT_FAILURE);
+}
 
 static void str_cli_testpipe(int sockfd, FILE* fp) {
 	char sendline[MAXLINE], recvline[MAXLINE];
@@ -37,6 +44,8 @@ int main(int argc, char* argv[])
 
 	if (argc != 2)
 		err_quit("usage: %s <IPAddress>", argv[0]);
+	if (mysignal(SIGPIPE, sig_pipe) == SIG_ERR)
+		err_sys("signal error");
 	
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		err_sys("socket error");

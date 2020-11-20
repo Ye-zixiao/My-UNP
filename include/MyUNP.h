@@ -30,6 +30,10 @@
 
 #define LISTENQ 1024 //最大客户排队连接数
 
+#define MAX(a,b) ((a) > (b) ? (a) : (b))
+#define MIN(a,b) ((a) > (b) ? (b) : (b))
+
+
 
 
 /**
@@ -45,7 +49,6 @@ void debug(void);
 /**
  * 网络地址辅助函数  */
 char* sock_ntop(const struct sockaddr* sockaddr, socklen_t addrlen);
-
 //下面的暂不实现
 int sock_bind_wild(int sockfd, int family);
 int sock_cmp_addr(const struct sockaddr* sockaddr1, 
@@ -80,11 +83,14 @@ Sigfunc* mysignal(int signo, Sigfunc* func);
 
 
 /**
- * 回射服务器辅助函数 */
+ * 回射客户-服务器辅助函数 */
 void str_echo(int sockfd);
+
 void sum_echo1(int sockfd);
 void sum_echo2(int sockfd);
+
 void str_cli(int sockfd, FILE* fp);
+void str_cli1(int sockfd, FILE* fp);
 void sum_cli2(int sockfd, FILE* fp);
 
 
