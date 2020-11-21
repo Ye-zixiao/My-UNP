@@ -17,6 +17,8 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/select.h>
+#include <poll.h>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -24,7 +26,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 
-
+#define INFTIM -1
 #define BUFSIZE 4096
 #define MAXLINE 4096
 
@@ -91,6 +93,8 @@ void sum_echo2(int sockfd);
 
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
+void str_cli2(int sockfd, FILE* fp);
+
 void sum_cli2(int sockfd, FILE* fp);
 
 

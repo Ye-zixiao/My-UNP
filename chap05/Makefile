@@ -9,12 +9,11 @@ CFLAGS := -O -Wall -I$(INCLUDE)
 SRCS := $(wildcard *.c)
 OBJS := $(SRCS:c=o)
 PRGS := $(SRCS:.c=)
-LIBUNP := $(LIBPATH)/libmyunp.so
 
 .PHONY:
-all: $(LIBUNP) $(PRGS)
+all: LIBUNP $(PRGS)
 
-$(LIBUNP):
+LIBUNP:
 	cd $(LIBPATH) && make
 
 $(PRGS):%:%.o
