@@ -6,7 +6,7 @@
 /**
  * 以指定字符串格式获取当前时间，非线程安全 
  */
-const char* currTime(const char* fmt) {
+const char* currtime(const char* fmt) {
 	static char timebuf[TIMEBUFLEN];
 	struct tm* ptm;
 	time_t ct;
@@ -24,7 +24,7 @@ const char* currTime(const char* fmt) {
 /**
  * 以指定字符串格式获取当前时间，线程安全
  */
-char* currTime_r(char* buf, size_t maxlen, const char* fmt) {
+char* currtime_r(char* buf, size_t maxlen, const char* fmt) {
 	struct tm* ptm;
 	time_t ct;
 

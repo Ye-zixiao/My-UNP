@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 			inet_ntop(AF_INET, &cliaddr.sin_addr, buf, sizeof(buf)),
 			ntohs(cliaddr.sin_port));
 
-		snprintf(buf, sizeof(buf), "%s\r\n", currTime(NULL));
+		snprintf(buf, sizeof(buf), "%s\r\n", currtime(NULL));
 		if (write(connfd, buf, strlen(buf)) != strlen(buf))
 			err_sys("write error");
 		if (close(connfd) == -1)

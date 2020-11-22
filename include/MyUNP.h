@@ -18,7 +18,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/select.h>
-#include <poll.h>
+#include <sys/poll.h>
+#include <sys/epoll.h>
 
 #include <sys/socket.h>
 #include <sys/un.h>
@@ -29,6 +30,10 @@
 #define INFTIM -1
 #define BUFSIZE 4096
 #define MAXLINE 4096
+#ifndef OPEN_MAX
+#define OPEN_MAX 1024
+#endif
+
 
 #define LISTENQ 1024 //最大客户排队连接数
 
@@ -38,8 +43,7 @@
 
 
 
-/**
- * 错误例程 */
+/* 错误例程 */
 void err_ret(const char* fmt, ...);
 void err_sys(const char* fmt, ...);
 void err_dump(const char* fmt, ...);
@@ -48,8 +52,7 @@ void err_quit(const char* fmt, ...);
 void debug(void);
 
 
-/**
- * 网络地址辅助函数  */
+/* 网络地址辅助函数  */
 char* sock_ntop(const struct sockaddr* sockaddr, socklen_t addrlen);
 //下面的暂不实现
 int sock_bind_wild(int sockfd, int family);
@@ -63,8 +66,7 @@ void sock_set_port(struct sockaddr* sockaddr, socklen_t addrlen, in_port_t port)
 void sock_set_wild(struct sockaddr* sockaddr, socklen_t addrlen);
 
 
-/**
- * 流式套接字指定字节的读写 */
+/* 流式套接字指定字节的读写 */
 ssize_t readn(int fd, void* buf, size_t nbytes);
 ssize_t writen(int fd, const void* buf, size_t nbytes);
 ssize_t readline(int fd, void* buf, size_t maxlen);
@@ -72,20 +74,17 @@ ssize_t readline1(int fd, void* buf, size_t maxlen);
 ssize_t readlinebuf(void** cptrptr);
 
 
-/**
- * 时间状态函数 */
-const char* currTime(const char* fmt);
-char* currTime_r(char* buf, size_t maxlen, const char* fmt);
+/* 时间状态函数 */
+const char* currtime(const char* fmt);
+char* currtime_r(char* buf, size_t maxlen, const char* fmt);
 
 
-/**
- * 自定义信号处理程序安装 */
+/* 自定义信号处理程序安装 */
 typedef void Sigfunc(int);
 Sigfunc* mysignal(int signo, Sigfunc* func);
 
 
-/**
- * 回射客户-服务器辅助函数 */
+/* 回射客户-服务器辅助函数 */
 void str_echo(int sockfd);
 
 void sum_echo1(int sockfd);
