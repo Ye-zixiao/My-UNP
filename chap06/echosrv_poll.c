@@ -41,6 +41,7 @@ int main(int argc, char* argv[])
 		/* 接受客户的连接请求，并将新生成的连接套接字加入的client数组
 			之中，方便后续让poll进行监控 */
 		if (client[0].revents & POLLIN) {
+			client[0].revents = 0;
 			len = sizeof(cliaddr);
 			if ((connfd = accept(listenfd, (struct sockaddr*)&cliaddr, &len)) == -1) {
 				if (errno == EINTR) continue;
@@ -69,6 +70,7 @@ int main(int argc, char* argv[])
 				!(client[i].revents & (POLLIN | POLLERR)))
 				continue;
 			else {
+				client[i].revents = 0;
 				if ((nread = read(sockfd, buf, MAXLINE)) == -1) {
 					//若客户发送了RST分节，则移除掉这个连接套接字
 					if (errno = ECONNRESET) {
