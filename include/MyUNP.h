@@ -15,6 +15,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <signal.h>
+#include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/select.h>
@@ -41,6 +42,7 @@
 #define MIN(a,b) ((a) > (b) ? (b) : (b))
 
 
+void debug(void);
 
 
 /* 错误例程 */
@@ -49,7 +51,6 @@ void err_sys(const char* fmt, ...);
 void err_dump(const char* fmt, ...);
 void err_msg(const char* fmt, ...);
 void err_quit(const char* fmt, ...);
-void debug(void);
 
 
 /* 网络地址辅助函数  */
@@ -76,15 +77,31 @@ Sigfunc* mysignal(int signo, Sigfunc* func);
 
 /* 回射客户-服务器辅助函数 */
 void str_echo(int sockfd);
-
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
 void str_cli2(int sockfd, FILE* fp);
 
 void sum_echo1(int sockfd);
 void sum_echo2(int sockfd);
-
 void sum_cli2(int sockfd, FILE* fp);
+
+void dg_echo(int sockfd, struct sockaddr* cliaddr, socklen_t clilen);
+void dg_echox(int sockfd, struct sockaddr* cliaddr, socklen_t clilen);
+void dg_cli(int sockfd, FILE* fp, 
+		const struct sockaddr* svaddr, socklen_t svlen);
+void dg_cli1(int sockfd, FILE* fp,
+		const struct sockaddr* svaddr, socklen_t svlen);
+void dg_cli2(int sockfd, FILE* fp, 
+		const struct sockaddr* svaddr, socklen_t svlen);
+void dg_clix(int sockfd, FILE* fp,
+		const struct sockaddr* svaddr, socklen_t svlen);
+
+
+/* 文件控制函数 */
+int set_fd(int fd, int nflag);
+int set_fl(int fd, int nflag);
+int clr_fd(int fd, int cflag);
+int clr_fl(int fd, int cflag);
 
 
 
