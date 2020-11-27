@@ -1,4 +1,8 @@
-﻿#include "MyUNP.h"
+﻿/**
+ * 实验方法:向一个主机A发送数据报,然后让主机B发送给当前
+ * 服务器一个udp数据报,那么这个数据报就会被忽略
+ **/
+#include "MyUNP.h"
 
 #define SERV_PORT 12000
 

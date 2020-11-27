@@ -39,14 +39,17 @@ static void recvfrom_int(int signo) {
 void dg_echox(int sockfd, struct sockaddr* cliaddr, socklen_t clilen) {
 	char message[MAXLINE];
 	socklen_t len;
+	int n;
 
+	n = 10 * 1024;
+	if(setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &n, sizeof(int)) == -1)
+		err_sys("setsockopt error");
 	if (mysignal(SIGINT, recvfrom_int) == SIG_ERR)
 		err_sys("mysignal error");
 	for (;;) {
 		len = clilen;
 		if (recvfrom(sockfd, message, MAXLINE, 0, cliaddr, &len) == -1)
 			err_sys("recvfrom error");
-		//sleep(1);
 		++count;
 	}
 }
