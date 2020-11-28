@@ -53,8 +53,10 @@ void err_msg(const char* fmt, ...);
 void err_quit(const char* fmt, ...);
 
 
+
 /* 网络地址辅助函数  */
 char* sock_ntop(const struct sockaddr* sockaddr, socklen_t addrlen);
+
 
 
 /* 流式套接字指定字节的读写 */
@@ -65,14 +67,17 @@ ssize_t readline1(int fd, void* buf, size_t maxlen);
 ssize_t readlinebuf(void** cptrptr);
 
 
+
 /* 时间状态函数 */
 const char* currtime(const char* fmt);
 char* currtime_r(char* buf, size_t maxlen, const char* fmt);
 
 
+
 /* 自定义信号处理程序安装 */
 typedef void Sigfunc(int);
 Sigfunc* mysignal(int signo, Sigfunc* func);
+
 
 
 /* 回射客户-服务器辅助函数 */
@@ -103,6 +108,10 @@ int set_fl(int fd, int nflag);
 int clr_fd(int fd, int cflag);
 int clr_fl(int fd, int cflag);
 
+
+
+/* 地址解析辅助函数 */
+struct servent* getserv(const char* name_or_port, const char* protoname);
 
 
 #endif //!MY_UNPXFE34_H_
