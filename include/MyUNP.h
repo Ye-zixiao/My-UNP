@@ -102,6 +102,7 @@ void dg_clix(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen);
 
 
+
 /* 文件控制函数 */
 int set_fd(int fd, int nflag);
 int set_fl(int fd, int nflag);
@@ -112,6 +113,16 @@ int clr_fl(int fd, int cflag);
 
 /* 地址解析辅助函数 */
 struct servent* getserv(const char* name_or_port, const char* protoname);
+int gethost(struct in_addr* addrArr, int n, const char* name);
+
+
+
+/* 由getaddrinfo()函数派生出的辅助函数 */
+struct addrinfo*
+	host_serv(const char* host, const char* serv, int family, int socktype);
+int tcp_connect(const char* host, const char* serv);
+int tcp_listen(const char* host, const char* serv, socklen_t* addrlen);
+
 
 
 #endif //!MY_UNPXFE34_H_

@@ -10,7 +10,7 @@ struct servent* getserv(const char* name_or_port, const char* protoname) {
 
 	if ((sptr = getservbyname(name_or_port, protoname)) == NULL) {
 		port = atoi(name_or_port);
-		if ((sptr = getservbyport(ntohs(port), protoname)) == NULL)
+		if ((sptr = getservbyport(htons(port), protoname)) == NULL)
 			return NULL;
 	}
 	return sptr;

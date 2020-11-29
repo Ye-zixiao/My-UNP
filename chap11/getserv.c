@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 	if ((sptr = getserv(argv[1], argv[2])) == NULL)
 		err_quit("getserv error for %s", argv[1]);
 	printf("server: %s\n", sptr->s_name);
-	printf("port  : %d\n", sptr->s_port);
+	printf("port  : %d\n", ntohs(sptr->s_port));
 	printf("proto : %s\n", sptr->s_proto);
 	exit(EXIT_SUCCESS);
 }
