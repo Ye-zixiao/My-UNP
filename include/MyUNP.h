@@ -122,6 +122,9 @@ struct addrinfo*
 	host_serv(const char* host, const char* serv, int family, int socktype);
 int tcp_connect(const char* host, const char* serv);
 int tcp_listen(const char* host, const char* serv, socklen_t* addrlen);
+int udp_client(const char* host, const char* serv, struct sockaddr** saptr, socklen_t* lenp);
+int udp_connect(const char* host, const char* serv);
+int udp_server(const char* host, const char* serv, socklen_t* lenp);
 
 
 
