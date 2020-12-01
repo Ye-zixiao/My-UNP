@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
 	int sockfd;
 
 	if (argc != 2)
-		err_sys("usage: %s <IPAddress>", argv[0]);
+		err_quit("usage: %s <IPAddress>", argv[0]);
 
 	if ((sockfd = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
 		err_sys("socket error");
