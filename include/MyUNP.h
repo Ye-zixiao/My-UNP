@@ -94,6 +94,10 @@ void dg_echo(int sockfd, struct sockaddr* cliaddr, socklen_t clilen);
 void dg_echox(int sockfd, struct sockaddr* cliaddr, socklen_t clilen);
 void dg_cli(int sockfd, FILE* fp, 
 		const struct sockaddr* svaddr, socklen_t svlen);
+void dg_cli0(int sockfd, FILE* fp,
+		const struct sockaddr* svaddr, socklen_t svlen);
+void dg_cli00(int sockfd, FILE* fp,
+		const struct sockaddr* svaddr, socklen_t svlen);
 void dg_cli1(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen);
 void dg_cli2(int sockfd, FILE* fp, 
@@ -125,6 +129,12 @@ int tcp_listen(const char* host, const char* serv, socklen_t* addrlen);
 int udp_client(const char* host, const char* serv, struct sockaddr** saptr, socklen_t* lenp);
 int udp_connect(const char* host, const char* serv);
 int udp_server(const char* host, const char* serv, socklen_t* lenp);
+
+
+/* 高级I/O函数 */
+int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, int nsec);
+int readable_timeo(int sockfd, time_t nsec);
+int writeable_timeo(int sockfd, time_t nsec);
 
 
 
