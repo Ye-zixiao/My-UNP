@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
 			else if (pid == 0) {
 				if (close(listenfd) == -1)
 					err_sys("listenfd error");
-				str_echo(connfd);
+				str_echo1(connfd);
 				exit(EXIT_SUCCESS);
 			}
 			if (close(connfd) == -1)

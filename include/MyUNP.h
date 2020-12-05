@@ -16,6 +16,7 @@
 #include <time.h>
 #include <signal.h>
 #include <fcntl.h>
+#include <sys/uio.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/select.h>
@@ -82,6 +83,7 @@ Sigfunc* mysignal(int signo, Sigfunc* func);
 
 /* 回射客户-服务器辅助函数 */
 void str_echo(int sockfd);
+void str_echo1(int sockfd);
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
 void str_cli2(int sockfd, FILE* fp);
@@ -94,9 +96,11 @@ void dg_echo(int sockfd, struct sockaddr* cliaddr, socklen_t clilen);
 void dg_echox(int sockfd, struct sockaddr* cliaddr, socklen_t clilen);
 void dg_cli(int sockfd, FILE* fp, 
 		const struct sockaddr* svaddr, socklen_t svlen);
-void dg_cli0(int sockfd, FILE* fp,
+void dg_clit0(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen);
-void dg_cli00(int sockfd, FILE* fp,
+void dg_clit1(int sockfd, FILE* fp,
+		const struct sockaddr* svaddr, socklen_t svlen);
+void dg_clit2(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen);
 void dg_cli1(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen);

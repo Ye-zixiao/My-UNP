@@ -17,6 +17,6 @@ int main(int argc, char* argv[])
 	if (inet_pton(AF_INET, argv[1], &svaddr.sin_addr) <= 0)
 		err_sys("inet_pton error");
 	
-	dg_cli00(sockfd, stdin, (const struct sockaddr*)&svaddr, sizeof(svaddr));
+	dg_clit2(sockfd, stdin, (const struct sockaddr*)&svaddr, sizeof(svaddr));
 	exit(EXIT_SUCCESS);
 }

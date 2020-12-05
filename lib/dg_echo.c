@@ -50,6 +50,7 @@ void dg_echox(int sockfd, struct sockaddr* cliaddr, socklen_t clilen) {
 		len = clilen;
 		if (recvfrom(sockfd, message, MAXLINE, 0, cliaddr, &len) == -1)
 			err_sys("recvfrom error");
+//		printf("recvfrom success\n");
 		++count;
 	}
 }

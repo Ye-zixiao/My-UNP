@@ -6,10 +6,31 @@ static void sig_alrm(int signo) {
 }
 
 
+/**
+ * UNP书中提供的纯真版本 */
+void dg_cli(int sockfd, FILE* fp,
+		const struct sockaddr* svaddr, socklen_t svlen) {
+	char sendline[MAXLINE], recvline[MAXLINE + 1];
+	ssize_t nrecv;
+
+	while (fgets(sendline, MAXLINE, fp) != NULL) {
+		if (sendto(sockfd, sendline, strlen(sendline), 0, svaddr, svlen) == -1)
+			err_sys("sendto error");
+		if ((nrecv = recvfrom(sockfd, recvline, MAXLINE, 0, NULL, NULL)) == -1)
+			err_sys("recvfrom error");
+		recvline[nrecv] = 0;
+		if (fputs(recvline, stdout) == EOF)
+			err_sys("fputs error");
+	}
+	if (ferror(fp))
+		err_sys("fgets error");
+}
+
+
 
 /**
  * 向服务进程发送UDP数据报并试图获取回射数据 */
-void dg_cli(int sockfd, FILE* fp, 
+void dg_clit0(int sockfd, FILE* fp, 
 		const struct sockaddr* svaddr, socklen_t svlen) {
 	char sendline[MAXLINE], recvline[MAXLINE + 1];
 	Sigfunc* old_sigfunc;
@@ -47,7 +68,7 @@ void dg_cli(int sockfd, FILE* fp,
  * dg_cli函数的再版，不过将其中的等待套接字描述符可读超时机制由
  * 原来的信号中断完成改成了由select封装的readable_timeo()函数完成
  */
-void dg_cli0(int sockfd, FILE* fp,
+void dg_clit1(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen) {
 	char sendline[MAXLINE], recvline[MAXLINE + 1];
 	ssize_t nrecv;
@@ -77,7 +98,7 @@ void dg_cli0(int sockfd, FILE* fp,
  * dg_cli函数的再版，不过将其中的等待套接字描述符可读超时机制由
  * 原来的信号中断完成改成了由套接字选项SO_RCVTIMEO来完成
  */
-void dg_cli00(int sockfd, FILE* fp,
+void dg_clit2(int sockfd, FILE* fp,
 		const struct sockaddr* svaddr, socklen_t svlen) {
 	char sendline[MAXLINE], recvline[MAXLINE + 1];
 	struct timeval timebuf;
@@ -167,7 +188,9 @@ void dg_clix(int sockfd, FILE* fp,
 	const struct sockaddr* svaddr, socklen_t svlen) {
 	char sendline[DGLEN];
 
-	for (int i = 0; i < NDG; ++i)
+	for (int i = 0; i < NDG; ++i) {
 		if (sendto(sockfd, sendline, DGLEN, 0, svaddr, svlen) == -1)
 			err_sys("sendto error");
+//		printf("sendto success\n");
+	}
 }
