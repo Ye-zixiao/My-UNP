@@ -21,7 +21,7 @@ int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, int 
 	if ((err = connect(sockfd, svaddr, len)) == -1) {
 		if (close(sockfd) == -1)
 			err_sys("close error");
-		if (errno = EINTR)
+		if (errno == EINTR)
 			errno = ETIMEDOUT;
 	}
 	alarm(0);

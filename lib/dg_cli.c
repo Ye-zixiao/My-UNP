@@ -176,10 +176,9 @@ void dg_cli2(int sockfd, FILE* fp,
 }
 
 
+
 #define NDG 2000
 #define DGLEN 1400
-
-
 
 /**
  * 对目标UDP套接字发送大量的UDP数据报，试图淹没接收端
@@ -188,9 +187,7 @@ void dg_clix(int sockfd, FILE* fp,
 	const struct sockaddr* svaddr, socklen_t svlen) {
 	char sendline[DGLEN];
 
-	for (int i = 0; i < NDG; ++i) {
+	for (int i = 0; i < NDG; ++i)
 		if (sendto(sockfd, sendline, DGLEN, 0, svaddr, svlen) == -1)
 			err_sys("sendto error");
-//		printf("sendto success\n");
-	}
 }

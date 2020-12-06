@@ -1,6 +1,6 @@
 #include "MyUNP.h"
 
-
+#ifndef MSG_WAITALL
 /**
  * 从指定套接字读取指定字节数的数据
  */
@@ -49,3 +49,6 @@ ssize_t writen(int fd, const void* buf, size_t nbytes) {
 	}
 	return nbytes - nleft;
 }
+
+
+#endif

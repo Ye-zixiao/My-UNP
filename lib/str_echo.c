@@ -34,3 +34,22 @@ void str_echo1(int sockfd) {
 			err_sys("write error");
 	}
 }
+
+
+void str_echo2(int sockfd) {
+	char buf[MAXLINE], iobuf[MAXLINE];
+	FILE* fpin, * fpout;
+
+	if ((fpin = fdopen(sockfd, "r")) == NULL)
+		err_sys("fdopen error");
+	if ((fpout = fdopen(sockfd, "w")) == NULL)
+		err_sys("fdopen error");
+	if (setvbuf(fpout, iobuf, _IOLBF, MAXLINE) == -1)
+		err_sys("setvbuf error");
+
+	while (fgets(buf, MAXLINE, fpin) != NULL)
+		if (fputs(buf, fpout) == EOF)
+			err_sys("fputs error");
+	if (ferror(fpin))
+		err_sys("fputs error");
+}

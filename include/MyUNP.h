@@ -17,6 +17,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <sys/uio.h>
+#include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <sys/select.h>
@@ -61,16 +62,23 @@ char* sock_ntop(const struct sockaddr* sockaddr, socklen_t addrlen);
 
 
 /* 流式套接字指定字节的读写 */
-ssize_t readn(int fd, void* buf, size_t nbytes);
-ssize_t writen(int fd, const void* buf, size_t nbytes);
 ssize_t readline(int fd, void* buf, size_t maxlen);
 ssize_t readline1(int fd, void* buf, size_t maxlen);
 ssize_t readlinebuf(void** cptrptr);
+
+#ifdef MSG_WAITALL
+#define readn(fd, buf, nbytes)	recv(fd, buf, nbytes, MSG_WAITALL)
+#define writen(fd, buf, nbytes)	send(fd, buf, nbytes, MSG_WAITALL)
+#else
+ssize_t readn(int fd, void* buf, size_t nbytes);
+ssize_t writen(int fd, const void* buf, size_t nbytes);
+#endif
 
 
 
 /* 时间状态函数 */
 const char* currtime(const char* fmt);
+const char* currtime_p(const char* ignore);
 char* currtime_r(char* buf, size_t maxlen, const char* fmt);
 
 
@@ -84,9 +92,12 @@ Sigfunc* mysignal(int signo, Sigfunc* func);
 /* 回射客户-服务器辅助函数 */
 void str_echo(int sockfd);
 void str_echo1(int sockfd);
+void str_echo2(int sockfd);
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
 void str_cli2(int sockfd, FILE* fp);
+void str_clip(int sockfd, FILE* fp);
+void str_cli_nblk(int sockfd, FILE* fp);
 
 void sum_echo1(int sockfd);
 void sum_echo2(int sockfd);
@@ -139,6 +150,12 @@ int udp_server(const char* host, const char* serv, socklen_t* lenp);
 int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, int nsec);
 int readable_timeo(int sockfd, time_t nsec);
 int writeable_timeo(int sockfd, time_t nsec);
+
+
+/* 非阻塞相关函数 */
+int connect_nblk(int sockfd, 
+		const struct sockaddr* svaddr, socklen_t svlen, time_t nsec);
+
 
 
 
