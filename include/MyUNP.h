@@ -40,8 +40,8 @@
 
 #define LISTENQ 1024 //最大客户排队连接数
 
-#define MAX(a,b) ((a) > (b) ? (a) : (b))
-#define MIN(a,b) ((a) > (b) ? (b) : (b))
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+#define MIN(a, b) ((a) > (b) ? (b) : (a))
 
 
 void debug(void);
