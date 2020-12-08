@@ -4,24 +4,26 @@
 
 int daemon_proc;
 
+#define ERRMSG_LEN	128
+
 
 /**
  * 处理真正的错误消息输出的功能
- * @param errnoflag 是否输出errno消息
+ * @param iserror   是否输出错误码提示消息
+ * @param error		错误码
  * @param level     syslog消息级别
  * @param fmt       格式化字符串
  * @param ap        可变参数列表
  */
 static void 
-err_doit(int errnoflag, int level, const char* fmt, va_list ap) {
-	int errno_save, slen;
-	char buf[MAXLINE + 1];
+err_doit(int iserror, int error, int level, const char* fmt, va_list ap) {
+	char buf[ERRMSG_LEN + 1];
+	int slen;
 
-	errno_save = errno;
-	vsnprintf(buf, MAXLINE, fmt, ap);
+	vsnprintf(buf, ERRMSG_LEN, fmt, ap);
 	slen = strlen(buf);
-	if (errnoflag)
-		snprintf(buf + slen, MAXLINE - slen, ": %s", strerror(errno_save));
+	if (iserror)
+		snprintf(buf + slen, ERRMSG_LEN - slen, ": %s", strerror(error));
 	strcat(buf, "\n");
 
 	//根据情况输出到syslog设施或者stderr中
@@ -29,8 +31,8 @@ err_doit(int errnoflag, int level, const char* fmt, va_list ap) {
 		syslog(level, buf);
 	else {
 		fflush(stdout);
-		fputs(buf, stdout);
-		fflush(stderr);
+		fputs(buf, stderr);
+		fflush(NULL);
 	}
 }
 
@@ -40,18 +42,42 @@ void err_ret(const char* fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	err_doit(1, LOG_INFO, fmt, ap);
+	err_doit(1, errno, LOG_INFO, fmt, ap);
 	va_end(ap);
 	return;
 }
 
 
-/* 与系统调用相关的致命错误 */
+/* 与系统调用相关的非致命错误，打印errno，不过该错误码
+	errno是出错函数返回得到的，需要用户手动传入 */
+void err_cont(int error, const char* fmt, ...) {
+	va_list ap;
+
+	va_start(ap, fmt);
+	err_doit(1, error, LOG_INFO, fmt, ap);
+	va_end(ap);
+	return;
+}
+
+
+/* 与系统调用相关的致命错误，打印errno */
 void err_sys(const char* fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	err_doit(1, LOG_ERR, fmt, ap);
+	err_doit(1, errno, LOG_ERR, fmt, ap);
+	va_end(ap);
+	exit(EXIT_FAILURE);
+}
+
+
+/* 与系统调用相关的致命错误，打印errno，不过该错误码
+	errno是出错函数返回得到，需要用户手动传入 */
+void err_exit(int error, const char* fmt, ...) {
+	va_list ap;
+	
+	va_start(ap, fmt);
+	err_doit(1, error, LOG_ERR, fmt, ap);
 	va_end(ap);
 	exit(EXIT_FAILURE);
 }
@@ -62,11 +88,13 @@ void err_dump(const char* fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	err_doit(1, LOG_ERR, fmt, ap);
+	err_doit(1, errno, LOG_ERR, fmt, ap);
 	va_end(ap);
 	abort();
 	exit(EXIT_FAILURE);
 }
+
+
 
 
 /* 与系统调用无关的非致命错误，不打印errno */
@@ -74,7 +102,7 @@ void err_msg(const char* fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	err_doit(0, LOG_INFO, fmt, ap);
+	err_doit(0, 0, LOG_INFO, fmt, ap);
 	va_end(ap);
 	return;
 }
@@ -85,7 +113,7 @@ void err_quit(const char* fmt, ...) {
 	va_list ap;
 
 	va_start(ap, fmt);
-	err_doit(0, LOG_ERR, fmt, ap);
+	err_doit(0, 0, LOG_ERR, fmt, ap);
 	va_end(ap);
 	exit(EXIT_FAILURE);
 }
