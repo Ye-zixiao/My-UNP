@@ -1,8 +1,16 @@
 #include "MyUNP.h"
 
 
+static void sig_intr(int signo) {
+	fprintf(stderr, "\nclosing server...\n");
+	exit(EXIT_SUCCESS);
+}
+
+
 static void* thread_func(void* arg) {
-	int fd = (int)arg;
+	int fd = *(int*)arg;
+	free(arg);
+
 	str_echo1(fd);
 	if (close(fd) == -1)
 		err_sys("close error");
@@ -12,7 +20,7 @@ static void* thread_func(void* arg) {
 
 int main(int argc, char* argv[])
 {
-	int listenfd, connfd, err;
+	int listenfd, *connfdp, err;
 	struct sockaddr* cliaddr;
 	socklen_t addrlen, len;
 	pthread_t tid;
@@ -24,21 +32,24 @@ int main(int argc, char* argv[])
 	else
 		err_quit("usage: %s [host] <server/port>", argv[0]);
 
+	if (mysignal(SIGINT, sig_intr) == SIG_ERR)
+		err_sys("mysignal error");
 	if ((cliaddr = malloc(addrlen)) == NULL)
 		err_sys("malloc error");
 	for (;;) {
 		len = addrlen;
-		if ((connfd = accept(listenfd, cliaddr, &len)) == -1)
+		/* 通过为每一个线程动态分配一个int大小的空间来存储accept
+		   新返回的连接套接字描述符，从而来规避线程间对原来connfd
+		   这个唯一变量的竞态条件  */
+		if ((connfdp = malloc(sizeof(int))) == NULL)
+			err_sys("malloc error");
+
+		if ((*connfdp = accept(listenfd, cliaddr, &len)) == -1)
 			err_sys("accept error");
 		printf("%s: connection from %s\n", currtime("%Y-%m-%d %T"),
 			sock_ntop(cliaddr, len));
 
-		/* 若这里pthread_create的最后一个参数不是直接传递connfd的值，那么
-		   当新线程创建之后并没有及时执行：	int fd=*(int*)arg;  然后就让
-		   发生了上下文切换，控制权又交给了主线程，而主线程又调用了accept
-		   返回了一个新的套接字描述符覆写了connfd。那么此时前面的线程就无法
-		   真正用到属于自己的套接字描述符了！这便是静态条件问题（线程没有同步） */
-		if ((err = pthread_create_detached(&tid, thread_func, (void*)connfd)) != 0)
+		if ((err = pthread_create_detached(&tid, thread_func, (void*)connfdp)) != 0)
 			err_exit(err, "pthread_create_detached error");
 	}
 }

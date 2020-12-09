@@ -2,7 +2,7 @@ CC := gcc
 ROOT := ..
 INCLUDE := $(ROOT)/include
 
-DFLAGS := -shared
+DFLAGS := -shared -lpthread
 CFLAGS := -fPIC -O -Wall -I$(INCLUDE)
 OBJS := $(patsubst %.c,%.o,$(wildcard *.c))
 LIBUNP := libmyunp.so
