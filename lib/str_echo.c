@@ -3,8 +3,8 @@
 
 /* 从客户进程中读取文本行并简单回射 */
 void str_echo(int sockfd) {
-	ssize_t nread;
 	char buf[MAXLINE];
+	ssize_t nread;
 
 again:
 	while ((nread = readline(sockfd, buf, MAXLINE)) > 0) {
@@ -15,6 +15,24 @@ again:
 		goto again;
 	else if (nread < 0)
 		err_sys("readline error");
+}
+
+
+/* str_echo的线程安全版本 */
+void str_echo_r(int sockfd) {
+	char buf[MAXLINE];
+	ssize_t nread;
+
+again:
+	while ((nread = readline_r(sockfd, buf, MAXLINE)) > 0) {
+		if (write(sockfd, buf, nread) != nread)
+			err_sys("write error");
+	}
+	if (nread < 0) {
+		if (errno == EINTR)goto again;
+		else if (errno == ECONNRESET) shutdown(sockfd, SHUT_WR);
+		else err_sys("readline_r error");
+	}
 }
 
 

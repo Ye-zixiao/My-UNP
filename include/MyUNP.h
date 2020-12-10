@@ -45,6 +45,9 @@
 #define MIN(a, b) ((a) > (b) ? (b) : (a))
 
 
+extern int daemon_proc;
+
+
 void debug(void);
 
 
@@ -67,6 +70,7 @@ char* sock_ntop(const struct sockaddr* sockaddr, socklen_t addrlen);
 /* 流式套接字指定字节的读写 */
 ssize_t readline(int fd, void* buf, size_t maxlen);
 ssize_t readline1(int fd, void* buf, size_t maxlen);
+ssize_t readline_r(int fd, void* buf, size_t maxlen);
 ssize_t readlinebuf(void** cptrptr);
 
 #ifdef MSG_WAITALL
@@ -96,6 +100,7 @@ Sigfunc* mysignal(int signo, Sigfunc* func);
 void str_echo(int sockfd);
 void str_echo1(int sockfd);
 void str_echo2(int sockfd);
+void str_echo_r(int sockfd);
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
 void str_cli2(int sockfd, FILE* fp);
