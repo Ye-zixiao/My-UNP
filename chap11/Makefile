@@ -14,7 +14,7 @@ PRGS := $(SRCS:.c=)
 all: LIBUNP $(PRGS)
 
 LIBUNP:
-	cd $(LIBPATH) && make
+	cd $(LIBPATH) && make -j4
 
 $(PRGS):%:%.o
 	$(CC) -o $@ $< $(DFLAGS)

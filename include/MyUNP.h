@@ -142,6 +142,7 @@ int clr_fl(int fd, int cflag);
 /* 地址解析辅助函数 */
 struct servent* getserv(const char* name_or_port, const char* protoname);
 int gethost(struct in_addr* addrArr, int n, const char* name);
+struct hostent* gethost1(const char* host);
 
 
 

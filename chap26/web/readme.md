@@ -9,4 +9,8 @@ webclient -------> main.c             web客户端主程序
               						  取返回的状态信息
 ```
 
+#### 执行流程：
+
+<img src="web.jpg" alt="web" style="zoom: 50%;" />
+
 我个人使用nginx服务器来作为测试使用的服务器程序
