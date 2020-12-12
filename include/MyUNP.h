@@ -163,15 +163,37 @@ int readable_timeo(int sockfd, time_t nsec);
 int writeable_timeo(int sockfd, time_t nsec);
 
 
+/* 文件锁 */
+int lock_reg(int fd, int cmd, int lock_type, off_t offset, int whence, int len);
+int lock_test(int fd, int cmd, int lock_type, off_t offset, int whence, int len);
+#define read_lock(fd, offset, whence, len)		\
+		lock_reg((fd), F_SETLK, F_RDLCK, (offset), whence, (len))
+#define readw_lock(fd, offset, whence, len)		\
+		lock_reg((fd), F_SETLKW, F_RDLCK, (offset), whence, (len))
+#define write_lock(fd, offset, whence, len)		\
+		lock_reg((fd), F_SETLK, F_WRLCK, (offset), whence, (len))
+#define writew_lock(fd, offset, whence, len)		\
+		lock_reg((fd), F_SETLKW, F_WRLCK, (offset), whence, (len))
+#define unlock(fd, offset, whence, len)			\
+		lock_reg((fd), F_SETLK, F_UNLCK, (offset), whence, (len))
+#define unlock1(fd, offset, whence, len)			\
+		lock_reg((fd), F_SETLKW, F_UNLCK, (offset), whence, (len))
+
 
 /* 非阻塞相关函数 */
 int connect_nblk(int sockfd, 
 		const struct sockaddr* svaddr, socklen_t svlen, time_t nsec);
 
 
+
 /* 线程相关函数 */
 int pthread_create_detached(pthread_t* thread, void* (*pf)(void*), void* arg);
 
+
+
+/* 其他 */
+void pr_cpu_time(void);
+void web_child(int sockfd);
 
 
 
