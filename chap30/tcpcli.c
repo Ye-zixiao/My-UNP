@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 {
 	int sockfd, nchildren, nloops, nbytes;
 	char request[MAXLINE], reply[MAXN];
-	pid_t pid; ssize_t n;
+	pid_t pid;
 
 	if (argc != 6)
 		err_quit("usage: client <host/ip> <serv/port> <#children>"
@@ -32,12 +32,12 @@ int main(int argc, char* argv[])
 
 				if (write(sockfd, request, strlen(request)) != strlen(request))
 					err_sys("write error");
-				if ((n = readn(sockfd, reply, nbytes)) != nbytes)
+				if (readn(sockfd, reply, nbytes) != nbytes)
 					err_sys("readn error");
 				if (close(sockfd) == -1)
 					err_sys("close error");
 			}
-			printf("child %d done\n", i);
+			printf("child %2d done\n", i);
 			exit(EXIT_SUCCESS);
 		}
 	}

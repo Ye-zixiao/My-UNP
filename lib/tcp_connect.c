@@ -28,7 +28,7 @@ int tcp_connect(const char* host, const char* serv) {
 			err_sys("close error");
 	} while ((res = res->ai_next) != NULL);
 	if (res == NULL)
-		err_sys("tcp_connect error fro %s, %s", host, serv);
+		err_sys("tcp_connect error for %s, %s", host, serv);
 
 	freeaddrinfo(ressave);
 	return sockfd;

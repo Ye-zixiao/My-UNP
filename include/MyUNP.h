@@ -162,6 +162,9 @@ int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, int 
 int readable_timeo(int sockfd, time_t nsec);
 int writeable_timeo(int sockfd, time_t nsec);
 
+ssize_t send_fd(int sockfd, void* vptr, size_t nbytes, int sendfd);
+ssize_t recv_fd(int sockfd, void* vptr, size_t nbytes, int* recvfd);
+
 
 /* 文件锁 */
 int lock_reg(int fd, int cmd, int lock_type, off_t offset, int whence, int len);
@@ -194,6 +197,8 @@ int pthread_create_detached(pthread_t* thread, void* (*pf)(void*), void* arg);
 /* 其他 */
 void pr_cpu_time(void);
 void web_child(int sockfd);
+void web_child_r(int sockfd);
+void web_child_r1(int sockfd);
 
 
 

@@ -4,7 +4,7 @@ INCLUDE := $(ROOT)/include
 LIBPATH := $(ROOT)/lib
 
 DFLAGS := -Wl,-rpath $(LIBPATH) -L$(LIBPATH) -lmyunp -lpthread
-CFLAGS := -O -Wall -I$(INCLUDE)
+CFLAGS := -I$(INCLUDE) -O -Wall
 
 SRCS := $(wildcard *.c)
 OBJS := $(SRCS:c=o)

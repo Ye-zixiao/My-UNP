@@ -34,7 +34,7 @@ int tcp_listen(const char* host, const char* serv, socklen_t* addrlen) {
 	if (res == NULL)
 		err_sys("tcp_listen error for %s, %s", host, serv);
 
-	if (listen(listenfd, 20) == -1)
+	if (listen(listenfd, LISTENQ) == -1)
 		err_sys("listen error");
 	if (addrlen != NULL)
 		*addrlen = res->ai_addrlen;
