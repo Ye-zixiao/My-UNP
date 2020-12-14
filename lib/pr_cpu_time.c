@@ -23,7 +23,7 @@ void pr_cpu_time(void) {
 		myusage.ru_stime.tv_usec / 1000000.0;
 	sys += (double)childusage.ru_stime.tv_sec +
 		childusage.ru_stime.tv_usec / 1000000.0;
-	sys += (double)threadusage.ru_utime.tv_sec +
+	sys += (double)threadusage.ru_stime.tv_sec +
 		threadusage.ru_stime.tv_usec / 1000000.0;
 	printf("\nuser time: %g, sys time: %g\n", user, sys);
 }
