@@ -2,9 +2,9 @@
 
 
 /**
- * ���κ��û���ȡЭ���ַʹ��.
- * ʹ������+���񷵻�addrinfo�ṹ����ָ�룬��������ָ����ַ��
- * ���׽������ͣ���ʧ�ܷ���NULL
+ * 供任何用户获取协议地址使用.
+ * 使用主机+服务返回addrinfo结构链表指针，函数仅限指定地址族
+ * 和套接字类型，若失败返回NULL
  **/
 struct addrinfo*
 host_serv(const char* host, const char* serv, int family, int socktype) {
