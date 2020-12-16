@@ -21,6 +21,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/ioctl.h>
 #include <sys/select.h>
 #include <sys/poll.h>
 #include <sys/epoll.h>
@@ -100,6 +101,7 @@ Sigfunc* mysignal(int signo, Sigfunc* func);
 void str_echo(int sockfd);
 void str_echo1(int sockfd);
 void str_echo2(int sockfd);
+void str_echo3(int sockfd);
 void str_echo_r(int sockfd);
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
@@ -158,7 +160,7 @@ int udp_server(const char* host, const char* serv, socklen_t* lenp);
 
 
 /* 高级I/O函数 */
-int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, int nsec);
+int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, time_t nsec);
 int readable_timeo(int sockfd, time_t nsec);
 int writeable_timeo(int sockfd, time_t nsec);
 

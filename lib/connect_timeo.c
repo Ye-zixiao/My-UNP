@@ -10,12 +10,12 @@ static void sig_alrm(int signo) {
  * 执行connect函数，但必须要求其在指定时间内完成连接的建立，否则由SIGALRM
  * 信号中断并设置ETIMEDOUT，而不是使用按照connect自己的规定等待超时
  */
-int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, int nsec) {
+int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, time_t nsec) {
 	Sigfunc* old_sigfunc;
 	int err;
 
 	if ((old_sigfunc = mysignal(SIGALRM, sig_alrm)) == SIG_ERR)
-		err_sys("mysignal error");
+		return -1;
 	if (alarm(nsec) != 0)
 		err_msg("connect_timeo: alarm was already set");
 	if ((err = connect(sockfd, svaddr, len)) == -1) {

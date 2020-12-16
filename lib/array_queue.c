@@ -45,15 +45,15 @@ int arrq_full(const struct arrqueue* aq) {
 
 int arrq_enqueue(struct arrqueue* aq, const void* val, size_t memsz) {
 	if (arrq_full(aq)) return -1;
-	memcpy(MEMSTART(aq, memsz, aq->iput), val, memsz);
-	aq->iput = (++(aq->iput)) % aq->nmem;//避免语法歧义
+	memcpy(MEMSTART(aq, memsz, aq->iput++), val, memsz);
+	aq->iput %= aq->nmem;
 	return 0;
 }
 
 
 int arrq_dequeue(struct arrqueue* aq, void* val, size_t memsz) {
 	if (arrq_empty(aq)) return -1;
-	memcpy(val, MEMSTART(aq, memsz, aq->iget), memsz);
-	aq->iget = (++(aq->iget)) % aq->nmem;
+	memcpy(val, MEMSTART(aq, memsz, aq->iget++), memsz);
+	aq->iget %= aq->nmem;
 	return 0;
 }

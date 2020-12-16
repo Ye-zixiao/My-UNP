@@ -3,8 +3,9 @@
 
 int main(void)
 {
-	struct sockaddr_in svaddr;
+	struct sockaddr_in svaddr, cliaddr;
 	int sockfd, connfd;
+	socklen_t len;
 
 	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1)
 		err_sys("socket error");
@@ -18,10 +19,13 @@ int main(void)
 		err_sys("listen error");
 
 	for (;;) {
-		if ((connfd = accept(sockfd, NULL, NULL)) == -1)
+		len = sizeof(cliaddr);
+		if ((connfd = accept(sockfd, &cliaddr, &len)) == -1)
 			err_sys("accept error");
+		printf("%s: new connection from %s\n", currtime("%T"),
+				sock_ntop((struct sockaddr*)&cliaddr, len));
 
-		str_echo2(connfd);
+		str_echo3(connfd);
 		if (close(connfd) == -1)
 			err_sys("close error");
 	}
