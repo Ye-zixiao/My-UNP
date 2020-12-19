@@ -4,6 +4,16 @@
 #include <stdlib.h>
 #include <stddef.h>
 
+
+/**
+ * 支持指定类型的优先队列：
+ * 1）若要支持最大堆的功能，需要向其提供一个greater_n_equal的函数；
+ * 2）若要支持最小堆的功能，需要向其提供一个shorter_n_equal的函数。
+ * 该提供的函数原型就是下面的Comp。
+ * 
+ */
+
+
 typedef int Comp(const void*, const void*);
 
 struct priority_queue {
