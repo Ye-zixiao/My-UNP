@@ -3,7 +3,7 @@
 
 static void* thread_func(void* arg) {
 	int fd = (int)arg;
-	str_echo1(fd);
+	str_echo(fd);
 	if (close(fd) == -1)
 		err_sys("close error");
 	return (void*)NULL;

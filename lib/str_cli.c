@@ -74,6 +74,11 @@ void str_cli1(int sockfd, FILE* fp) {
  * 数据并从服务进程获取回射数据
  */
 void str_cli2(int sockfd, FILE* fp) {
+	str_cli3(sockfd, fp, stdout);
+}
+
+
+void str_cli3(int sockfd, FILE* fpin, FILE* fpout) {
 	int maxfdp1, stdineof, nread;
 	char buf[MAXLINE];
 	fd_set rset;
@@ -83,9 +88,9 @@ void str_cli2(int sockfd, FILE* fp) {
 	for (;;) {
 		//当stdin遇到EOF后，select不应该再监控fileno(fp)
 		if (stdineof == 0)
-			FD_SET(fileno(fp), &rset);
+			FD_SET(fileno(fpin), &rset);
 		FD_SET(sockfd, &rset);
-		maxfdp1 = MAX(fileno(stdin), sockfd) + 1;
+		maxfdp1 = MAX(fileno(fpin), sockfd) + 1;
 		if (select(maxfdp1, &rset, NULL, NULL, NULL) == -1)
 			err_sys("select error");
 
@@ -97,18 +102,18 @@ void str_cli2(int sockfd, FILE* fp) {
 				if (stdineof) return;
 				err_quit("str_cli2: server terminated prematurely");
 			}
-			if (write(fileno(stdout), buf, nread) != nread)
+			if (write(fileno(fpout), buf, nread) != nread)
 				err_sys("write error");
 		}
-		if (FD_ISSET(fileno(fp), &rset)) {
-			if ((nread = read(fileno(fp), buf, MAXLINE)) == -1)
+		if (FD_ISSET(fileno(fpin), &rset)) {
+			if ((nread = read(fileno(fpin), buf, MAXLINE)) == -1)
 				err_sys("read error");
 			else if (nread == 0) {
 				stdineof = 1;
 				//写半关闭
 				if (shutdown(sockfd, SHUT_WR) == -1)
 					err_sys("shutdown error");
-				FD_CLR(fileno(fp), &rset);
+				FD_CLR(fileno(fpin), &rset);
 				continue;
 			}
 			if (write(sockfd, buf, nread) != nread)

@@ -34,7 +34,8 @@
 
 #define INFTIM -1
 #define BUFSIZE 4096
-#define MAXLINE 4096
+#define SBUFSIZE 64
+#define MAXLINE BUFSIZE
 #ifndef OPEN_MAX
 #define OPEN_MAX 1024
 #endif
@@ -106,6 +107,7 @@ void str_echo_r(int sockfd);
 void str_cli(int sockfd, FILE* fp);
 void str_cli1(int sockfd, FILE* fp);
 void str_cli2(int sockfd, FILE* fp);
+void str_cli3(int sockfd, FILE* fpin, FILE* fpout);
 void str_clip(int sockfd, FILE* fp);
 void str_clit(int sockfd, FILE* fp);
 void str_cli_nblk(int sockfd, FILE* fp);
