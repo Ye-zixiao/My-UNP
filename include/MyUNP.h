@@ -40,20 +40,16 @@
 #define OPEN_MAX 1024
 #endif
 
-
+#define DEFAULT_FMODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 #define LISTENQ 1024 //最大客户排队连接数
 
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 #define MIN(a, b) ((a) > (b) ? (b) : (a))
 
 
-extern int daemon_proc;
-
-
-void debug(void);
-
-
 /* 错误例程 */
+extern int daemon_proc;
+void debug(void);
 void err_ret(const char* fmt, ...);
 void err_cont(int error, const char* fmt, ...);
 void err_sys(const char* fmt, ...);
@@ -62,6 +58,10 @@ void err_exit(int error, const char* fmt, ...);
 void err_msg(const char* fmt, ...);
 void err_quit(const char* fmt, ...);
 
+
+
+/* 守护进程初始化 */
+int daemon_init(const char* pname, int facility);
 
 
 /* 网络地址辅助函数  */

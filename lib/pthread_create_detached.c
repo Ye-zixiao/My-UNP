@@ -4,8 +4,7 @@
 /**
  * 创建一个可分离状态的线程
  */
-int pthread_create_detached(pthread_t* thread,
-		void* (routine)(void*), void* arg) {
+int pthread_create_detached(pthread_t* thread, void* (*pf)(void*), void* arg) {
 	pthread_attr_t attr;
 	int err;
 
@@ -13,7 +12,7 @@ int pthread_create_detached(pthread_t* thread,
 		return err;
 	if ((err = pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED)) != 0)
 		return err;
-	if ((err = pthread_create(thread, &attr, routine, arg)) != 0)
+	if ((err = pthread_create(thread, &attr, pf, arg)) != 0)
 		return err;
 	if ((err = pthread_attr_destroy(&attr)) != 0)
 		return err;
