@@ -17,6 +17,7 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <pthread.h>
+#include <sys/stat.h>
 #include <sys/uio.h>
 #include <sys/time.h>
 #include <sys/types.h>
@@ -62,6 +63,7 @@ void err_quit(const char* fmt, ...);
 
 /* 守护进程初始化 */
 int daemon_init(const char* pname, int facility);
+void daemon_inetd(const char* pname, int facility);
 
 
 /* 网络地址辅助函数  */

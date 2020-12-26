@@ -17,6 +17,7 @@ int daemon_init(const char* pname, int facility) {
 	/* 创建新的会话，成为新会话的会话首进程。对SIGHUP信号做忽略
 		处理，保证会话首进程(即父进程)终止后不会因systemd(init)
 		进程的SIGHUP而终止 */
+	umask(0);
 	if (setsid() < 0)
 		return -1;
 	if (mysignal(SIGHUP, SIG_IGN) == SIG_ERR)
