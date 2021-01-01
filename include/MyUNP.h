@@ -96,8 +96,7 @@ char* currtime_r(char* buf, size_t maxlen, const char* fmt);
 
 
 /* 自定义信号处理程序安装 */
-typedef void Sigfunc(int);
-Sigfunc* mysignal(int signo, Sigfunc* func);
+sighandler_t mysignal(int signo, __sighandler_t func);
 
 
 
@@ -166,6 +165,7 @@ int udp_server(const char* host, const char* serv, socklen_t* lenp);
 
 /* 高级I/O函数 */
 int connect_timeo(int sockfd, const struct sockaddr* svaddr, socklen_t len, time_t nsec);
+int connect_timeo1(int sockfd, const struct sockaddr* svaddr, socklen_t len, time_t nsec);
 int readable_timeo(int sockfd, time_t nsec);
 int writeable_timeo(int sockfd, time_t nsec);
 
