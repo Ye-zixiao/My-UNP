@@ -96,7 +96,8 @@ char* currtime_r(char* buf, size_t maxlen, const char* fmt);
 
 
 /* 自定义信号处理程序安装 */
-sighandler_t mysignal(int signo, __sighandler_t func);
+sighandler_t mysignal(int signo, __sighandler_t handler);
+sighandler_t mysignal1(int signo, __sighandler_t handler);
 
 
 
